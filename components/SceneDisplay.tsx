@@ -3,10 +3,9 @@ import { useGame } from '../hooks/useGame';
 import { storyData } from '../context/GameContext';
 import { useTypewriter } from '../hooks/useTypewriter';
 import { useAudio } from '../context/AudioContext';
-import typewriterSfx from '../assets/sfx/typewriter-sound-effect-312919.mp3';
 
-import singleKeyType2Sfx from '../assets/sfx/single_key_type_2.mp3'
-import singkeKeyTypeSfx from '../assets/sfx/single_key_type.wav';
+const singleKeyType2Sfx = '/assets/sfx/single_key_type_2.mp3';
+const singkeKeyTypeSfx = '/assets/sfx/single_key_type.wav';
 
 const SceneDisplay: React.FC = () => {
   const { state, dispatch } = useGame();

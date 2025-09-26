@@ -2,31 +2,35 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useLockScroll } from '../hooks/useLockScroll.ts';
 import { useAudio } from '../context/AudioContext';
 
-// Import all image assets
-import altar from '../assets/altar.jpeg';
-import askAlbularyo from '../assets/askAlbularyo.png';
-import askCaptain from '../assets/askCaptain.png';
-import badEndingNoSalt from '../assets/badEnding_noSalt.jpeg';
-import bg from '../assets/bg.png';
-import finalFightApproach from '../assets/finalFight_approach.jpeg';
-import finalFightDirect from '../assets/finalFight_direct.png';
-import finalFightSearch from '../assets/finalFight_search.png';
-import gameOverNoHp from '../assets/gameOver_noHp.jpeg';
-import goodEnding from '../assets/goodEnding.jpeg';
-import investigateTiyanak from '../assets/investigateTiyanak.jpeg';
-import oldChurchEntry from '../assets/oldChurch_entry.png';
-import ricefieldsEntry from '../assets/ricefields_entry.jpeg';
-import start from '../assets/start.png';
-import wakwakJumpscare from '../assets/wakwak_jumpscare.jpeg';
-import wakwakNoGarlic from '../assets/wakwak_noGarlic.png';
-import wakwakUseGarlic from '../assets/wakwak_useGarlic.jpeg';
+type AssetDescriptor = { name: string; src: string };
 
-// Import all audio assets
-import bgMusic from '../assets/sfx/bg-music.mp3';
-import jumpscare1 from '../assets/sfx/jumpscare-1.mp3';
-import singleKeyType from '../assets/sfx/single_key_type.wav';
-import singleKeyType2 from '../assets/sfx/single_key_type_2.mp3';
-import typewriterSfx from '../assets/sfx/typewriter-sound-effect-312919.mp3';
+const IMAGE_ASSETS: AssetDescriptor[] = [
+  { name: 'Background', src: '/assets/bg.png' },
+  { name: 'Start Screen', src: '/assets/start.png' },
+  { name: 'Albularyo', src: '/assets/askAlbularyo.png' },
+  { name: 'Captain', src: '/assets/askCaptain.png' },
+  { name: 'Church Entry', src: '/assets/oldChurch_entry.png' },
+  { name: 'Altar', src: '/assets/altar.jpeg' },
+  { name: 'Rice Fields', src: '/assets/ricefields_entry.jpeg' },
+  { name: 'Tiyanak Investigation', src: '/assets/investigateTiyanak.jpeg' },
+  { name: 'Final Fight Approach', src: '/assets/finalFight_approach.jpeg' },
+  { name: 'Final Fight Direct', src: '/assets/finalFight_direct.png' },
+  { name: 'Final Fight Search', src: '/assets/finalFight_search.png' },
+  { name: 'Wakwak Jumpscare', src: '/assets/wakwak_jumpscare.jpeg' },
+  { name: 'Wakwak No Garlic', src: '/assets/wakwak_noGarlic.png' },
+  { name: 'Wakwak Use Garlic', src: '/assets/wakwak_useGarlic.jpeg' },
+  { name: 'Good Ending', src: '/assets/goodEnding.jpeg' },
+  { name: 'Bad Ending', src: '/assets/badEnding_noSalt.jpeg' },
+  { name: 'Game Over', src: '/assets/gameOver_noHp.jpeg' },
+];
+
+const AUDIO_ASSETS: AssetDescriptor[] = [
+  { name: 'Background Music', src: '/assets/sfx/bg-music.mp3' },
+  { name: 'Jumpscare Sound', src: '/assets/sfx/jumpscare-1.mp3' },
+  { name: 'Typewriter Sound', src: '/assets/sfx/typewriter-sound-effect-312919.mp3' },
+  { name: 'Key Type 1', src: '/assets/sfx/single_key_type.wav' },
+  { name: 'Key Type 2', src: '/assets/sfx/single_key_type_2.mp3' },
+];
 
 interface PreloaderProps {
   onComplete: () => void;
@@ -55,38 +59,6 @@ const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
     'Blood that steams in moonlight is not yours yet.'
   ];
 
-  // All assets to preload
-  const imageAssets = [
-    { name: 'Background', src: bg },
-    { name: 'Start Screen', src: start },
-    { name: 'Albularyo', src: askAlbularyo },
-    { name: 'Captain', src: askCaptain },
-    { name: 'Church Entry', src: oldChurchEntry },
-    { name: 'Altar', src: altar },
-    { name: 'Rice Fields', src: ricefieldsEntry },
-    { name: 'Tiyanak Investigation', src: investigateTiyanak },
-    { name: 'Final Fight Approach', src: finalFightApproach },
-    { name: 'Final Fight Direct', src: finalFightDirect },
-    { name: 'Final Fight Search', src: finalFightSearch },
-    { name: 'Wakwak Jumpscare', src: wakwakJumpscare },
-    { name: 'Wakwak No Garlic', src: wakwakNoGarlic },
-    { name: 'Wakwak Use Garlic', src: wakwakUseGarlic },
-    { name: 'Good Ending', src: goodEnding },
-    { name: 'Bad Ending', src: badEndingNoSalt },
-    { name: 'Game Over', src: gameOverNoHp },
-  ];
-
-  const audioAssets = [
-    { name: 'Background Music', src: bgMusic },
-    { name: 'Jumpscare Sound', src: jumpscare1 },
-    { name: 'Typewriter Sound', src: typewriterSfx },
-    { name: 'Key Type 1', src: singleKeyType },
-    { name: 'Key Type 2', src: singleKeyType2 },
-  ];
-
-  const allAssets = [...imageAssets, ...audioAssets];
-  const totalAssets = allAssets.length;
-
   const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
   useEffect(() => {
@@ -94,9 +66,10 @@ const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
     startedRef.current = true;
     const preloadAssets = async () => {
       try {
+        const totalAssets = IMAGE_ASSETS.length + AUDIO_ASSETS.length;
         let loadedCount = 0;
 
-        for (const asset of imageAssets) {
+  for (const asset of IMAGE_ASSETS) {
           setCurrentAsset(`Harvesting memory: ${asset.name}`);
           try {
             await preloadImage(asset.src);
@@ -110,7 +83,7 @@ const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
 
         setCurrentAsset('Binding echoes (audio)...');
         try {
-          const audioSrcs = audioAssets.map(asset => asset.src);
+          const audioSrcs = AUDIO_ASSETS.map(asset => asset.src);
           await preload(audioSrcs);
         } catch (err) {
           console.warn('Some audio files failed to preload', err);
@@ -129,7 +102,7 @@ const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
       }
     };
     preloadAssets();
-  }, [preload, onComplete, imageAssets, audioAssets, totalAssets]);
+  }, [preload, onComplete]);
 
   // Rotating horror tips
   useEffect(() => {

@@ -5,7 +5,8 @@ import StartScreen from './components/StartScreen';
 import GameScreen from './components/GameScreen';
 import Preloader from './components/Preloader';
 import { useAudio } from './context/AudioContext';
-import bgMusic from './assets/sfx/bg-music.mp3';
+
+const bgMusic = '/assets/sfx/bg-music.mp3';
 
 const App: React.FC = () => {
   const { state } = useGame();

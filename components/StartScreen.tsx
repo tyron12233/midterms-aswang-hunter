@@ -3,8 +3,8 @@ import { useLockScroll } from '../hooks/useLockScroll.ts';
 import { useGame } from '../hooks/useGame';
 import { useAudio } from '../context/AudioContext';
 
-import backgroundImage from '../assets/bg.png';
-import bgMusic from '../assets/sfx/bg-music.mp3';
+const backgroundImage = '/assets/bg.png';
+const bgMusic = '/assets/sfx/bg-music.mp3';
 
 const StartScreen: React.FC = () => {
   const [name, setName] = useState('');
