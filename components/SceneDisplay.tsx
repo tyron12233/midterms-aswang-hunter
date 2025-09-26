@@ -175,12 +175,14 @@ const SceneDisplay: React.FC = () => {
       </div>
 
       {/* Top Section: Story Caption */}
-  <div className="relative z-10 w-full max-w-5xl mx-auto px-5 pt-24 md:pt-28 lg:pr-[320px] xl:pr-[360px]">
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-5 pt-24 md:pt-28 px-[100px]">
         <div className="story-wrapper">
           <div className="story-inner">
-            <p className={`story-text ${isTyping && !skipped ? 'typing-active' : ''}`}
+            <p
+              className={`story-text text-center ${isTyping && !skipped ? 'typing-active' : ''}`}
               aria-live="polite"
-              aria-atomic="true">
+              aria-atomic="true"
+            >
               {skipped ? scene.text : displayedText}
               {isTyping && !skipped && <span className="caret" aria-hidden="true" />}
             </p>
@@ -193,7 +195,7 @@ const SceneDisplay: React.FC = () => {
       </div>
 
       {/* Bottom Section: Choices */}
-  <div className="relative z-10 p-8 md:p-12 w-full max-w-5xl mx-auto text-center choice-region lg:pr-[320px] xl:pr-[360px]">
+      <div className="relative px-[100px] z-10 p-8 md:p-12 w-full max-w-5xl mx-auto text-center choice-region">
         <div className="flex flex-col gap-7 min-h-[240px]">
           {showChoices && (
             scene.isEnding ? (
@@ -270,7 +272,7 @@ const SceneDisplay: React.FC = () => {
         .story-text { font-size:1.15rem; line-height:1.55; letter-spacing:.04em; font-family:'Lato', sans-serif; font-weight:400; color:#e8dede; text-shadow: 0 0 6px rgba(0,0,0,0.9), 0 0 18px rgba(140,0,0,0.25); }
         @media (min-width:768px){ .story-text { font-size:1.28rem; } }
         .story-text.typing-active { filter:brightness(1.07) contrast(108%); }
-        .story-text:first-letter { font-family:'Creepster', cursive; font-size:2.55rem; line-height:1; color:#ff2d2d; padding-right:6px; text-shadow:0 0 8px #7a0000,0 0 22px #ff3939; float:left; }
+  .story-text:first-letter { font-family:'Creepster', cursive; font-size:2.55rem; line-height:1; color:#ff2d2d; padding-right:6px; text-shadow:0 0 8px #7a0000,0 0 22px #ff3939; display:inline-block; }
         .caret { display:inline-block; width:10px; height:1.25rem; background:linear-gradient(180deg,#ff4747,#8b0000); margin-left:4px; box-shadow:0 0 6px #ff1111; animation: caretPulse .9s steps(2,end) infinite; transform: translateY(3px); }
         @keyframes caretPulse { 0%,60% { opacity:1; } 61%,100% { opacity:0; } }
         .skip-hint { position:absolute; bottom:-0.6rem; right:0.4rem; font-size:.55rem; letter-spacing:.45em; color:rgba(255,180,180,0.35); font-weight:600; animation: skipFade 2.4s ease-in-out infinite; }

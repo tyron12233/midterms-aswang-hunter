@@ -1,6 +1,10 @@
 import React, { useMemo } from 'react';
 import { useGame } from '../hooks/useGame';
-import { Briefcase } from 'lucide-react';
+
+interface HudProps {
+    variant?: 'floating' | 'inline';
+    className?: string;
+}
 
 const HealthIcon: React.FC<{className?: string}> = ({className}) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="black" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -16,7 +20,7 @@ const InventoryIcon: React.FC<{className?: string}> = ({className}) => (
 );
 
 
-const Hud: React.FC = () => {
+const Hud: React.FC<HudProps> = ({ variant = 'floating', className }) => {
     const { state } = useGame();
     const hpPercentage = Math.max(0, state.hp);
     const severity: 'high' | 'mid' | 'low' = hpPercentage > 60 ? 'high' : hpPercentage > 30 ? 'mid' : 'low';
@@ -28,9 +32,15 @@ const Hud: React.FC = () => {
             .join(' • ');
     }, [state.inventory]);
 
+    const containerClasses = [
+        'pointer-events-none select-none hud-veil px-3 sm:px-6 pt-3 sm:pt-5',
+        variant === 'floating' ? 'fixed top-4 right-4 z-30 max-w-[320px] sm:max-w-[360px]' : 'relative z-30 w-full max-w-[320px] sm:max-w-[360px]',
+        className ?? ''
+    ].join(' ');
+
     return (
         <>
-            <div className="fixed top-4 right-4 z-30 max-w-[320px] sm:max-w-[360px] pointer-events-none select-none hud-veil">
+            <div className={containerClasses}>
                 <div className="flex flex-col items-end gap-3 sm:gap-4 pointer-events-auto w-full">
                     {/* Player Block */}
                     <div className="hud-panel player-name-panel w-full">
