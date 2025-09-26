@@ -13,17 +13,19 @@ export const storyData: StoryData = {
         "text": "Report to the Barangay Captain at the dilapidated town hall.",
         "to": "askCaptain"
       }
-    ]
+    ],
+    background: "assets/start.png"
   },
   "askAlbularyo": {
-    "text": "'It has wings like a bat and separates at the waist,' the old healer whispers, his voice raspy. He hands you a rough pouch that smells of the sea. 'Take this salt. The Manananggal despises it.' You've gained Asin (Salt).",
+    "text": "It has wings like a bat and separates at the waist, the old healer whispers, his voice raspy. He hands you a rough pouch that smells of the sea. Take this salt. The Manananggal despises it. You've gained Asin (Salt).",
     "onArrive": { "addItem": "Asin" },
     "choices": [
       {
         "text": "Thank him and head to the old church where it was last seen.",
         "to": "oldChurch_entry"
       }
-    ]
+    ],
+    background: "assets/askAlbularyo.png"
   },
   "askCaptain": {
     "text": "'My best men have vanished,' the captain says grimly, his face etched with worry. He hands you a braid of garlic. 'We believe it's a Wakwak, a different kind of horror. This might keep it at bay.' You've gained Bawang (Garlic).",
@@ -33,7 +35,8 @@ export const storyData: StoryData = {
         "text": "Nod grimly and head to the old church where it was last seen.",
         "to": "oldChurch_entry"
       }
-    ]
+    ],
+    background: "assets/askCaptain.png"
   },
   "oldChurch_entry": {
     "text": "The ancient church is a hollowed-out skeleton, its stone walls covered in moss. Dust motes dance in the single moonbeam piercing the collapsed roof. Do you investigate the crumbling bell tower or the desecrated altar?",
@@ -46,13 +49,14 @@ export const storyData: StoryData = {
         "text": "Inspect the altar at the far end of the church.",
         "to": "altar"
       }
-    ]
+    ],
+    background: "assets/oldChurch_entry.png"
   },
   "bellTower": {
     "text": "In the belfry, a creature with ragged, leathery wings and sharp talons screeches! It's a Wakwak, feasting on a goat. It turns its glowing red eyes on you!",
     "jumpScare": {
-      "image": "https://picsum.photos/seed/wakwak_scare/1200/800",
-      "sound": "https://cdn.pixabay.com/audio/2022/02/17/audio_39c3629707.mp3"
+      "image": "assets/wakwak_jumpscare.jpeg",
+      "sound": "assets/sfx/jumpscare-1.mp3"
     },
     "choices": [
       {
@@ -70,7 +74,8 @@ export const storyData: StoryData = {
         "to": "fightWakwakNoGarlic",
         "requires": "Asin"
       }
-    ]
+    ],
+    background: "assets/wakwak_jumpscare.jpeg"
   },
   "useGarlicOnWakwak": {
     "text": "The Wakwak recoils from the pungent garlic, giving you an opening! You slash with your bolo, wounding its wing. It shrieks and flies off into the night, dropping something shiny.",
@@ -80,7 +85,8 @@ export const storyData: StoryData = {
         "text": "You found an Agimat (Amulet)! Continue to the rice fields.",
         "to": "riceFields_entry"
       }
-    ]
+    ],
+    background: "assets/wakwak_useGarlic.jpeg"
   },
   "fightWakwakNoGarlic": {
     "text": "Without the garlic to weaken it, the Wakwak is too fast and ferocious. It claws you deeply before you can land a solid blow. It escapes into the night.",
@@ -90,7 +96,8 @@ export const storyData: StoryData = {
         "text": "Wounded, you limp towards the rice fields.",
         "to": "riceFields_entry"
       }
-    ]
+    ],
+    background: "assets/wakwak_noGarlic.png"
   },
   "altar": {
     "text": "The altar is overturned. Behind it, you find a small, intricately carved amulet throbbing with a faint warmth. It feels protective. You've found an Agimat (Amulet).",
@@ -100,7 +107,8 @@ export const storyData: StoryData = {
         "text": "With the amulet secured, you head towards the rice fields.",
         "to": "riceFields_entry"
       }
-    ]
+    ],
+    background: "assets/altar.jpeg"
   },
   "riceFields_entry": {
     "text": "The moon hangs high over the vast, dark rice paddies. The water reflects the stars like broken glass. In the distance, you hear the faint sound of a baby crying.",
@@ -113,13 +121,14 @@ export const storyData: StoryData = {
         "text": "It could be a real child! Investigate the sound.",
         "to": "investigateTiyanak"
       }
-    ]
+    ],
+    background: "assets/ricefields_entry.jpeg"
   },
   "investigateTiyanak": {
     "text": "You follow the crying to a small thicket. As you part the leaves, the crying stops. A small, monstrous creature with sharp teeth leaps out, lunging for you before you can react!",
     "jumpScare": {
-        "image": "https://picsum.photos/seed/tiyanak_scare/1200/800",
-        "sound": "https://cdn.pixabay.com/audio/2022/10/24/audio_39b251e687.mp3"
+      "image": "assets/investigateTiyanak.jpeg",
+      "sound": "assets/sfx/jumpscare-1.mp3"
     },
     "choices": [
       {
@@ -132,7 +141,8 @@ export const storyData: StoryData = {
         "to": "baleteTree_approach",
         "requires": "Agimat"
       }
-    ]
+    ],
+    background: "assets/investigateTiyanak.jpeg"
   },
   "tiyanakDamage": {
     "text": "The bite is painful and you feel a strange weakness spreading. You curse your foolishness and continue towards the ominous Balete tree.",
@@ -142,7 +152,8 @@ export const storyData: StoryData = {
         "text": "Continue, more cautious than before.",
         "to": "baleteTree_approach"
       }
-    ]
+    ],
+    background: "assets/investigateTiyanak.jpeg"
   },
   "baleteTree_approach": {
     "text": "You've reached the heart of the darkness: a massive, ancient Balete tree with thick, hanging roots that look like grasping arms. You can hear a sickening squelching sound from above. The Manananggal is here. This is the final battle.",
@@ -155,21 +166,23 @@ export const storyData: StoryData = {
         "text": "Remember the lore. Search for the lower half of its body.",
         "to": "finalFight_search"
       }
-    ]
+    ],
+    background: "assets/finalFight_approach.jpeg"
   },
   "finalFight_direct": {
     "text": "You attack the flying creature directly, but it's too agile in the air. It swoops down, its long, sharp tongue lashing out. Your bravery costs you dearly.",
     "onArrive": { "takeDamage": 50 },
     "jumpScare": {
-      "image": "https://picsum.photos/seed/manananggal_scare/1200/800",
-      "sound": "https://cdn.pixabay.com/audio/2023/08/04/audio_3a651cce6a.mp3"
+      "image": "assets/finalFight_direct.png",
+      "sound": "assets/sfx/jumpscare-1.mp3"
     },
     "choices": [
       {
         "text": "You're heavily wounded! You must find its lower half!",
         "to": "finalFight_search"
       }
-    ]
+    ],
+    background: "assets/finalFight_direct.png"
   },
   "finalFight_search": {
     "text": "You ignore the airborne horror and frantically search the base of the Balete tree. Hidden among the gnarled roots, you find it: the creature's vulnerable lower torso, standing motionless.",
@@ -184,19 +197,23 @@ export const storyData: StoryData = {
         "to": "badEnding_noSalt",
         "hideIf": "Asin"
       }
-    ]
+    ],
+    background: "assets/finalFight_search.png"
   },
   "goodEnding": {
     "text": "As the salt touches the flesh, the torso erupts in black smoke. High above, the winged creature gives a final, agonizing shriek and disintegrates into dust. The sun begins to rise. You have saved San Gubat.",
-    "isEnding": true
+    "isEnding": true,
+    background: "assets/goodEnding.jpeg"
   },
   "badEnding_noSalt": {
     "text": "Your bolo cuts deep, but it's not enough. The creature swoops down, enraged, and impales you with its sharp tongue. Your lack of the proper tool was your undoing. GAME OVER.",
-    "isEnding": true
+    "isEnding": true,
+    background: "assets/badEnding_noSalt.jpeg"
   },
   "gameOver_hp": {
     "text": "Your wounds are too severe. You collapse, and the darkness consumes you. Your hunt ends in failure. GAME OVER.",
-    "isEnding": true
+    "isEnding": true,
+    background: "assets/gameOver_noHp.jpeg"
   }
 };
 
@@ -229,7 +246,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       if (scene) {
         if (scene.onArrive) {
           if (scene.onArrive.addItem) {
-            if(!newInventory.includes(scene.onArrive.addItem)) {
+            if (!newInventory.includes(scene.onArrive.addItem)) {
               newInventory.push(scene.onArrive.addItem);
             }
           }
@@ -239,10 +256,10 @@ function gameReducer(state: GameState, action: GameAction): GameState {
           }
         }
         if (scene.jumpScare) {
-            jumpScare = scene.jumpScare;
+          jumpScare = scene.jumpScare;
         }
       }
-      
+
       const finalScene = newHp <= 0 ? 'gameOver_hp' : to;
 
       return {
@@ -261,17 +278,17 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         gameStarted: false,
       };
     case 'LOAD_GAME':
-      return {...action.payload, jumpScare: null}; // Ensure jump scares don't persist on load
+      return { ...action.payload, jumpScare: null }; // Ensure jump scares don't persist on load
     case 'ACKNOWLEDGE_DAMAGE':
       return {
         ...state,
         damageTaken: false
       };
     case 'CLEAR_JUMPSCARE':
-        return {
-            ...state,
-            jumpScare: null,
-        };
+      return {
+        ...state,
+        jumpScare: null,
+      };
     default:
       return state;
   }
@@ -285,7 +302,7 @@ const GameContext = createContext<{
   dispatch: () => null,
 });
 
-export const GameProvider: React.FC<{children: ReactNode}> = ({ children }) => {
+export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(gameReducer, initialState);
 
   useEffect(() => {
@@ -294,12 +311,12 @@ export const GameProvider: React.FC<{children: ReactNode}> = ({ children }) => {
       if (savedState) {
         const parsedState: GameState = JSON.parse(savedState);
         if (parsedState.gameStarted) {
-            dispatch({ type: 'LOAD_GAME', payload: parsedState });
+          dispatch({ type: 'LOAD_GAME', payload: parsedState });
         }
       }
     } catch (error) {
-        console.error("Failed to parse saved game state:", error);
-        localStorage.removeItem('gameState');
+      console.error("Failed to parse saved game state:", error);
+      localStorage.removeItem('gameState');
     }
   }, []);
 

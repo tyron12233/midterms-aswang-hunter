@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { GameProvider } from './context/GameContext';
+import { AudioProvider } from './context/AudioContext';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -11,9 +12,9 @@ if (!rootElement) {
 
 const root = ReactDOM.createRoot(rootElement);
 root.render(
-  <React.StrictMode>
+  <AudioProvider>
     <GameProvider>
       <App />
     </GameProvider>
-  </React.StrictMode>
+  </AudioProvider>
 );

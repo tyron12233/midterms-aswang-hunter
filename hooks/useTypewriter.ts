@@ -1,26 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
-export const useTypewriter = (text: string, speed = 20) => {
-  const [displayText, setDisplayText] = useState('');
+export const useTypewriter = (text, speed = 20) => {
+    const [index, setIndex] = useState(0);
+    const displayText = useMemo(() => text.slice(0, index), [index]);
+    useEffect(() => {
+        if (index >= text.length)
+            return;
 
-  useEffect(() => {
-    setDisplayText(''); // Reset on text change
-    if (text) {
-        let i = 0;
-        const typingInterval = setInterval(() => {
-            if (i < text.length) {
-                setDisplayText(prev => prev + text.charAt(i));
-                i++;
-            } else {
-                clearInterval(typingInterval);
-            }
+        const timeoutId = setTimeout(() => {
+            setIndex(i => i + 1);
         }, speed);
 
         return () => {
-            clearInterval(typingInterval);
+            clearTimeout(timeoutId);
         };
-    }
-  }, [text, speed]);
+    }, [index, text, speed]);
 
-  return displayText;
+    return displayText;
 };

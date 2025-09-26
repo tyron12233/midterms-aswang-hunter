@@ -1,33 +1,67 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useGame } from '../hooks/useGame';
 import { storyData } from '../context/GameContext';
 import { useTypewriter } from '../hooks/useTypewriter';
+import { useAudio } from '../context/AudioContext';
+import typewriterSfx from '../assets/sfx/typewriter-sound-effect-312919.mp3';
 
 const SceneDisplay: React.FC = () => {
   const { state, dispatch } = useGame();
   const [showChoices, setShowChoices] = useState(false);
   const [skipped, setSkipped] = useState(false);
-  const [backgrounds, setBackgrounds] = useState({
-      current: `https://picsum.photos/seed/${state.currentScene}/1920/1080`,
-      previous: null
-  });
+  // Track backgrounds for smooth cross-fade. Use scene.background if provided.
+  const initialScene = storyData[state.currentScene];
+  const [backgrounds, setBackgrounds] = useState<{
+    current: string;
+    previous: string | null;
+  }>(() => ({
+    current: initialScene?.background || `https://picsum.photos/seed/${state.currentScene}/1920/1080`,
+    previous: null,
+  }));
+
 
   const scene = storyData[state.currentScene];
   const displayedText = useTypewriter(scene ? scene.text : '', 20);
   const isTyping = scene ? displayedText.length < scene.text.length : false;
+  const { triggerSfx, preload } = useAudio();
+  const prevLenRef = useRef(0);
 
-  // Effect for background transitions
+  // Preload typewriter sound once
   useEffect(() => {
+    preload(typewriterSfx);
+  }, [preload]);
+
+  // Play short typewriter ticks while text is revealing
+  useEffect(() => {
+    if (!scene || skipped) return;
+    const currentLen = displayedText.length;
+    // Only when new character appears
+    if (currentLen > prevLenRef.current && currentLen <= scene.text.length) {
+      // Throttle: play every 2 characters to avoid audio clutter
+      if (currentLen % 9 === 0) {
+        triggerSfx(typewriterSfx, { volume: 0.4, maxDuration: 1.8, startAt: 12.3 });
+      }
+    }
+    prevLenRef.current = currentLen;
+  }, [displayedText, scene, skipped, triggerSfx]);
+
+
+
+  // Effect for background transitions; prefer scene.background if present
+  useEffect(() => {
+    const nextScene = storyData[state.currentScene];
+    const nextBg = nextScene?.background || `https://picsum.photos/seed/${state.currentScene}/1920/1080`;
     setBackgrounds(prev => ({
-        current: `https://picsum.photos/seed/${state.currentScene}/1920/1080`,
-        previous: prev.current,
+      current: nextBg,
+      previous: prev.current,
     }));
   }, [state.currentScene]);
-  
+
   // Reset state on scene change
   useEffect(() => {
     setShowChoices(false);
     setSkipped(false);
+    prevLenRef.current = 0; // reset typewriter progress for sfx
   }, [state.currentScene]);
 
   // Effect for showing choices after text is done typing or is skipped
@@ -37,14 +71,14 @@ const SceneDisplay: React.FC = () => {
       return () => clearTimeout(timer);
     }
   }, [isTyping, skipped, scene]);
-  
+
   // Effect for acknowledging screen shake from damage
   useEffect(() => {
-    if(state.damageTaken) {
-        const timer = setTimeout(() => {
-            dispatch({ type: 'ACKNOWLEDGE_DAMAGE' });
-        }, 500);
-        return () => clearTimeout(timer);
+    if (state.damageTaken) {
+      const timer = setTimeout(() => {
+        dispatch({ type: 'ACKNOWLEDGE_DAMAGE' });
+      }, 500);
+      return () => clearTimeout(timer);
     }
   }, [state.damageTaken, dispatch]);
 
@@ -70,15 +104,15 @@ const SceneDisplay: React.FC = () => {
         <h2 className="text-3xl text-red-500 font-creepster">Error: Scene Not Found</h2>
         <p className="text-gray-400 mt-4">The path has grown dark. Could not find data for "{state.currentScene}".</p>
         <button
-            onClick={handleReset}
-            className="mt-8 px-8 py-3 font-bold text-lg text-white bg-red-800/80 border border-red-600 rounded-sm hover:bg-red-700 transition-all"
+          onClick={handleReset}
+          className="mt-8 px-8 py-3 font-bold text-lg text-white bg-red-800/80 border border-red-600 rounded-sm hover:bg-red-700 transition-all"
         >
-            RETURN TO THE START
+          RETURN TO THE START
         </button>
       </div>
     );
   }
-  
+
   const filteredChoices = scene.choices?.filter(choice => {
     const hasRequired = !choice.requires || state.inventory.includes(choice.requires);
     const isHidden = choice.hideIf && state.inventory.includes(choice.hideIf);
@@ -89,43 +123,43 @@ const SceneDisplay: React.FC = () => {
   const skipCursorClass = isTyping && !skipped ? 'cursor-pointer' : 'cursor-default';
 
   return (
-    <div 
-        className={`relative w-full h-screen flex flex-col justify-between overflow-hidden ${screenShakeClass} ${skipCursorClass}`}
-        onClick={handleSkip}
+    <div
+      className={`relative w-full h-screen flex flex-col justify-between overflow-hidden ${screenShakeClass} ${skipCursorClass}`}
+      onClick={handleSkip}
     >
-        {/* Background Setup */}
-        {backgrounds.previous && (
-            <div 
-                className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out opacity-0" 
-                style={{ 
-                    backgroundImage: `url('${backgrounds.previous}')`,
-                    filter: 'grayscale(80%) brightness(0.5) contrast(1.2)',
-                }}
-            ></div>
-        )}
-       <div 
-        className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out opacity-100" 
-        style={{ 
-            backgroundImage: `url('${backgrounds.current}')`,
-            filter: 'grayscale(80%) brightness(0.5) contrast(1.2)',
+      {/* Background Setup */}
+      {backgrounds.previous && (
+        <div
+          className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out opacity-0"
+          style={{
+            backgroundImage: `url('${backgrounds.previous}')`,
+            //  filter: 'grayscale(80%) brightness(0.5) contrast(1.2)',
+          }}
+        ></div>
+      )}
+      <div
+        className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out opacity-100"
+        style={{
+          backgroundImage: `url('${backgrounds.current}')`,
+          //  filter: 'grayscale(80%) brightness(0.5) contrast(1.2)',
         }}
       ></div>
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent"></div>
       <div className="absolute inset-0 film-grain"></div>
-      
+
       {/* Top Section: Story Caption */}
       <div className="relative z-10 w-full max-w-4xl mx-auto px-4 pt-24 md:pt-28">
         <div className="bg-black/40 backdrop-blur-sm p-4 rounded-md">
-            <p 
+          <p
             className="text-lg md:text-xl leading-relaxed text-gray-200 text-center"
             style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}
-            >
+          >
             {skipped ? scene.text : displayedText}
             {isTyping && !skipped && <span className="inline-block animate-pulse">|</span>}
-            </p>
+          </p>
         </div>
       </div>
-      
+
       {/* Bottom Section: Choices */}
       <div className="relative z-10 p-8 md:p-12 w-full max-w-4xl mx-auto text-center">
         <div className="space-y-6 min-h-[250px]">
@@ -142,8 +176,8 @@ const SceneDisplay: React.FC = () => {
               <button
                 key={index}
                 onClick={(e) => {
-                    e.stopPropagation(); // Prevent skip click when clicking a choice
-                    handleChoice(choice.to);
+                  e.stopPropagation(); // Prevent skip click when clicking a choice
+                  handleChoice(choice.to);
                 }}
                 className="block w-full text-2xl md:text-3xl text-gray-300 hover:text-white font-creepster tracking-wider transition-all duration-300 opacity-0 animate-fadeInUp choice-button"
                 style={{ animationDelay: `${index * 0.2}s` }}

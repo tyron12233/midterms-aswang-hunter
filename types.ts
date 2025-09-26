@@ -11,8 +11,8 @@ export interface OnArrive {
 }
 
 export interface JumpScare {
-    image: string;
-    sound: string;
+  image: string;
+  sound: string;
 }
 
 export interface StoryNode {
@@ -21,6 +21,7 @@ export interface StoryNode {
   onArrive?: OnArrive;
   isEnding?: boolean;
   jumpScare?: JumpScare;
+  background?: string;
 }
 
 export interface StoryData {

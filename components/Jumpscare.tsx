@@ -1,39 +1,41 @@
 import React, { useEffect, useState } from 'react';
+import { useAudio } from '../context/AudioContext';
 
 interface JumpscareProps {
   imageSrc: string;
   soundSrc: string;
   onComplete: () => void;
+  /** Optional seconds offset to start playing the jumpscare sound from */
+  soundStartAt?: number;
 }
 
-const Jumpscare: React.FC<JumpscareProps> = ({ imageSrc, soundSrc, onComplete }) => {
+const Jumpscare: React.FC<JumpscareProps> = ({ imageSrc, soundSrc, onComplete, soundStartAt = 0 }) => {
   const [visible, setVisible] = useState(true);
 
-  useEffect(() => {
-    const audio = new Audio(soundSrc);
-    audio.play().catch(error => console.error("Audio play failed:", error));
+  const { triggerSfx } = useAudio();
 
+  useEffect(() => {
+    // Play SFX with a subtle fade out; keep max duration short so it doesn't linger.
+    triggerSfx(soundSrc, { volume: 1, fadeOut: 0.4, maxDuration: 1.5, startAt: soundStartAt });
     const timer = setTimeout(() => {
       setVisible(false);
-      // Allow fade-out animation to complete before calling onComplete
-      setTimeout(onComplete, 500); 
-    }, 1500); // Jumpscare duration
-
+      setTimeout(onComplete, 500);
+    }, 1500);
     return () => clearTimeout(timer);
-  }, [soundSrc, onComplete]);
+  }, [soundSrc, onComplete, triggerSfx, soundStartAt]);
 
   return (
-    <div 
-        className={`fixed inset-0 z-50 flex items-center justify-center bg-black transition-opacity duration-500 ${visible ? 'opacity-100' : 'opacity-0'}`}
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black transition-opacity duration-500 ${visible ? 'opacity-100' : 'opacity-0'}`}
     >
-        <div className="relative w-full h-full animate-jump-scare">
-            <img 
-                src={imageSrc} 
-                alt="A horrifying creature" 
-                className="object-cover w-full h-full"
-            />
-        </div>
-        <style>{`
+      <div className="relative w-full h-full animate-jump-scare">
+        <img
+          src={imageSrc}
+          alt="A horrifying creature"
+          className={`object-cover w-full h-full transition-opacity duration-500 ${visible ? 'opacity-100' : 'opacity-0'}`}
+        />
+      </div>
+      <style>{`
             @keyframes jump-scare-animation {
                 0% { transform: scale(1) rotate(0deg); opacity: 0.8; }
                 10% { transform: scale(1.2) rotate(-2deg); opacity: 1; }
