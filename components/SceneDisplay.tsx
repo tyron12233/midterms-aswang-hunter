@@ -5,6 +5,9 @@ import { useTypewriter } from '../hooks/useTypewriter';
 import { useAudio } from '../context/AudioContext';
 import typewriterSfx from '../assets/sfx/typewriter-sound-effect-312919.mp3';
 
+import singleKeyType2Sfx from '../assets/sfx/single_key_type_2.mp3'
+import singkeKeyTypeSfx from '../assets/sfx/single_key_type.wav';
+
 const SceneDisplay: React.FC = () => {
   const { state, dispatch } = useGame();
   const [showChoices, setShowChoices] = useState(false);
@@ -28,7 +31,8 @@ const SceneDisplay: React.FC = () => {
 
   // Preload typewriter sound once
   useEffect(() => {
-    preload(typewriterSfx);
+    preload(singkeKeyTypeSfx);
+    preload(singleKeyType2Sfx);
   }, [preload]);
 
   // Play short typewriter ticks while text is revealing
@@ -38,8 +42,10 @@ const SceneDisplay: React.FC = () => {
     // Only when new character appears
     if (currentLen > prevLenRef.current && currentLen <= scene.text.length) {
       // Throttle: play every 2 characters to avoid audio clutter
-      if (currentLen % 9 === 0) {
-        triggerSfx(typewriterSfx, { volume: 0.4, maxDuration: 1.8, startAt: 12.3 });
+      if (currentLen % 8 === 0) {
+        const sfx = Math.random() < 0.5 ? singleKeyType2Sfx : singkeKeyTypeSfx;
+
+        triggerSfx(singleKeyType2Sfx, { volume: 0.4, maxDuration: 3 });
       }
     }
     prevLenRef.current = currentLen;
