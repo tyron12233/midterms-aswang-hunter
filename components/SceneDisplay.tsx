@@ -175,7 +175,7 @@ const SceneDisplay: React.FC = () => {
       </div>
 
       {/* Top Section: Story Caption */}
-      <div className="relative z-10 w-full max-w-5xl mx-auto px-5 pt-24 md:pt-28">
+  <div className="relative z-10 w-full max-w-5xl mx-auto px-5 pt-24 md:pt-28 lg:pr-[320px] xl:pr-[360px]">
         <div className="story-wrapper">
           <div className="story-inner">
             <p className={`story-text ${isTyping && !skipped ? 'typing-active' : ''}`}
@@ -193,13 +193,13 @@ const SceneDisplay: React.FC = () => {
       </div>
 
       {/* Bottom Section: Choices */}
-      <div className="relative z-10 p-8 md:p-12 w-full max-w-5xl mx-auto text-center choice-region">
+  <div className="relative z-10 p-8 md:p-12 w-full max-w-5xl mx-auto text-center choice-region lg:pr-[320px] xl:pr-[360px]">
         <div className="flex flex-col gap-7 min-h-[240px]">
           {showChoices && (
             scene.isEnding ? (
               <button
                 onClick={handleReset}
-                className="ending-button animate-fadeInUp"
+                className="ending-button choice-reveal"
                 style={{ animationDelay: '0.15s' }}
               >
                 PLAY AGAIN
@@ -210,7 +210,7 @@ const SceneDisplay: React.FC = () => {
                 <button
                   key={index}
                   onClick={(e) => { e.stopPropagation(); handleChoice(choice.to); }}
-                  className="choice-btn animate-fadeInUp"
+                  className="choice-btn choice-reveal"
                   style={{ animationDelay: `${index * 0.18}s` }}
                 >
                   <span className="choice-label">{choice.text}</span>
@@ -311,12 +311,13 @@ const SceneDisplay: React.FC = () => {
         .animate-shake {
           animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
         }
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
+        .choice-reveal {
+          animation: choiceReveal 0.65s ease-out forwards;
         }
-        .animate-fadeInUp {
-          animation: fadeInUp 0.5s ease-out forwards;
+        @keyframes choiceReveal {
+          0% { filter: brightness(.78) saturate(80%); }
+          55% { filter: brightness(1.18) saturate(118%); }
+          100% { filter: brightness(1) saturate(100%); }
         }
         @keyframes grain { 0%, 100% { transform: translate(0, 0); } 10% { transform: translate(-1%, -2%); } 20% { transform: translate(2%, 1%); } 30% { transform: translate(-2%, -1%); } 40% { transform: translate(1%, 2%); } 50% { transform: translate(-1%, 1%); } 60% { transform: translate(2%, -2%); } 70% { transform: translate(-2%, 2%); } 80% { transform: translate(1%, -1%); } 90% { transform: translate(-1%, 2%); } }
         .film-grain::after { content: ""; position: absolute; top: -100%; left: -100%; width: 300%; height: 300%; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWDg4N3d3dtbW17e3t1dXVpaWl9fX1cXFxbW1t/f39wcHDBwcGjo6NsbGxvb29FRUVNTU1QUFBSUlJcXFxfX19ra2uEhISioqKhkaLNzMwAAAAAAABgwsEyAAAAAXRSTlMAQObYZgAAAAlwSFlzAAAALEgAACxIB0t1+/AAAAApSURBVDjL7c0BCQAwDMCg+z+0biflpq5MIMIIw4vLr3a1b41L5gRRBRTfIEQxX240JAAAAABJRU5ErkJggg=='); opacity: 0.08; pointer-events: none; animation: grain 1s steps(1) infinite; }

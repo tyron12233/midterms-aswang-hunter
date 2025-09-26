@@ -30,8 +30,8 @@ const Hud: React.FC = () => {
 
     return (
         <>
-            <div className="fixed top-0 right-0 z-30 px-3 sm:px-6 pt-3 sm:pt-5 pointer-events-none select-none hud-veil">
-                <div className="flex flex-col items-end gap-3 sm:gap-4 pointer-events-auto w-full max-w-[320px] sm:max-w-[360px]">
+            <div className="fixed top-4 right-4 z-30 max-w-[320px] sm:max-w-[360px] pointer-events-none select-none hud-veil">
+                <div className="flex flex-col items-end gap-3 sm:gap-4 pointer-events-auto w-full">
                     {/* Player Block */}
                     <div className="hud-panel player-name-panel w-full">
                         <div className="font-creepster text-2xl tracking-wider drop-shadow-[0_0_6px_#6e0000] text-red-500/90 player-name-glow">
