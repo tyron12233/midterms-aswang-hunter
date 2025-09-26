@@ -199,7 +199,7 @@ const SceneDisplay: React.FC = () => {
             scene.isEnding ? (
               <button
                 onClick={handleReset}
-                className="ending-button opacity-0 animate-fadeInUp"
+                className="ending-button animate-fadeInUp"
                 style={{ animationDelay: '0.15s' }}
               >
                 PLAY AGAIN
@@ -210,7 +210,7 @@ const SceneDisplay: React.FC = () => {
                 <button
                   key={index}
                   onClick={(e) => { e.stopPropagation(); handleChoice(choice.to); }}
-                  className="choice-btn opacity-0 animate-fadeInUp"
+                  className="choice-btn animate-fadeInUp"
                   style={{ animationDelay: `${index * 0.18}s` }}
                 >
                   <span className="choice-label">{choice.text}</span>
@@ -278,23 +278,24 @@ const SceneDisplay: React.FC = () => {
 
         /* Choices */
         .choice-region { position:relative; }
-        .choice-btn { position:relative; background:rgba(10,0,0,0.45); border:1px solid rgba(100,0,0,0.4); padding:1rem 1.25rem 1.2rem; border-radius:6px; font-family:'Creepster', cursive; font-size:2.15rem; letter-spacing:.06em; color:#bfa9a9; text-shadow:0 0 10px rgba(70,0,0,0.65); transition: all .4s cubic-bezier(.55,.12,.22,1); overflow:hidden; backdrop-filter: blur(2px) brightness(1.05); width:100%; }
+        .choice-btn { position:relative; background:linear-gradient(180deg,rgba(46,0,0,0.82),rgba(18,0,0,0.82)); border:1px solid rgba(210,30,30,0.45); padding:1rem 1.25rem 1.2rem; border-radius:6px; font-family:'Creepster', cursive; font-size:2.15rem; letter-spacing:.06em; color:#ffe7e7; text-shadow:0 0 14px rgba(150,0,0,0.7); transition: all .4s cubic-bezier(.55,.12,.22,1); overflow:hidden; backdrop-filter: blur(3px) brightness(1.1); width:100%; box-shadow:0 12px 28px -18px rgba(255,60,60,0.55), inset 0 0 22px -16px rgba(255,120,120,0.45); }
         @media (min-width:768px){ .choice-btn { font-size:2.6rem; } }
         .choice-btn .choice-label { position:relative; z-index:2; display:inline-block; padding:0 .35rem; }
-        .choice-btn:before { content:""; position:absolute; inset:0; background:radial-gradient(circle at 50% 35%,rgba(255,60,60,0.07),transparent 70%); opacity:.5; mix-blend-mode: overlay; transition:inherit; }
+        .choice-btn:before { content:""; position:absolute; inset:0; background:radial-gradient(circle at 48% 38%,rgba(255,110,110,0.22),transparent 72%); opacity:.75; mix-blend-mode: screen; transition:inherit; }
         .choice-btn .choice-ink { position:absolute; inset:0; background:
-            radial-gradient(circle at 20% 75%,rgba(255,0,0,0.22),transparent 55%),
-            radial-gradient(circle at 80% 30%,rgba(255,60,60,0.18),transparent 60%),
+            radial-gradient(circle at 20% 75%,rgba(255,0,0,0.28),transparent 55%),
+            radial-gradient(circle at 80% 30%,rgba(255,60,60,0.22),transparent 60%),
             repeating-linear-gradient(35deg,rgba(255,0,0,0.08)_0_6px,transparent_6px_12px);
-          opacity:0; filter: blur(8px) contrast(180%); transform:scale(1.4); transition: all .8s ease; mix-blend-mode: screen; }
-        .choice-btn:hover { color:#ffeaea; transform:translateY(-6px) scale(1.035); border-color:rgba(255,60,60,0.6); box-shadow:0 12px 28px -12px rgba(255,0,0,0.4), 0 0 28px -6px rgba(255,30,30,0.55); text-shadow:0 0 14px #ff3b3b,0 0 30px #a10000; }
+          opacity:.42; filter: blur(6px) contrast(165%); transform:scale(1.22); transition: all .8s ease; mix-blend-mode: screen; }
+        .choice-btn:hover { color:#fff5f5; transform:translateY(-6px) scale(1.035); border-color:rgba(255,60,60,0.6); box-shadow:0 14px 32px -12px rgba(255,0,0,0.45), 0 0 32px -8px rgba(255,40,40,0.6); text-shadow:0 0 16px #ff3b3b,0 0 34px #a10000; }
         .choice-btn:hover .choice-ink { opacity:.9; transform:scale(1.01); filter: blur(1.5px) contrast(140%); }
-        .choice-btn:active { transform:translateY(-2px) scale(1.01); filter:brightness(.9); }
+        .choice-btn:active { transform:translateY(-2px) scale(1.01); filter:brightness(.94); }
+        .choice-btn:not(:hover) .choice-ink { opacity:.5; }
         .choice-btn:focus-visible { outline:2px solid #ff3d3d; outline-offset:4px; }
         .choice-btn:not(:hover) { animation: choiceIdle 9s ease-in-out infinite; }
-        @keyframes choiceIdle { 0%,100% { filter:brightness(.95); } 50% { filter:brightness(1.05); } }
+        @keyframes choiceIdle { 0%,100% { filter:brightness(1); } 50% { filter:brightness(1.08); } }
 
-        .ending-button { position:relative; background:linear-gradient(160deg,#3a0000,#140000); border:1px solid #6e0000; padding:1rem 2.4rem; font-family:'Creepster',cursive; font-size:2.2rem; letter-spacing:.14em; color:#ffb3b3; text-shadow:0 0 16px #7a0000,0 0 32px #300; transition: all .5s ease; overflow:hidden; }
+        .ending-button { position:relative; background:linear-gradient(160deg,#3a0000,#140000); border:1px solid #a40000; padding:1rem 2.4rem; font-family:'Creepster',cursive; font-size:2.2rem; letter-spacing:.14em; color:#ffe0e0; text-shadow:0 0 18px #7a0000,0 0 36px #300; transition: all .5s ease; overflow:hidden; box-shadow:0 12px 32px -16px rgba(255,50,50,0.45), inset 0 0 20px -12px rgba(255,90,90,0.4); }
         .ending-button .ending-glow { position:absolute; inset:0; background:
             radial-gradient(circle at 50% 50%,rgba(255,60,60,0.3),transparent 70%),
             repeating-linear-gradient(45deg,rgba(255,0,0,0.08)_0_10px,transparent_10px_20px);
