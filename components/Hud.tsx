@@ -30,10 +30,10 @@ const Hud: React.FC = () => {
 
     return (
         <>
-            <div className="fixed top-0 left-0 right-0 z-30 px-3 sm:px-6 pt-3 sm:pt-5 pointer-events-none select-none hud-veil">
-                <div className="max-w-6xl mx-auto flex justify-between items-start gap-4">
+            <div className="fixed top-0 right-0 z-30 px-3 sm:px-6 pt-3 sm:pt-5 pointer-events-none select-none hud-veil">
+                <div className="flex flex-col items-end gap-3 sm:gap-4 pointer-events-auto w-full max-w-[320px] sm:max-w-[360px]">
                     {/* Player Block */}
-                    <div className="hud-panel player-name-panel">
+                    <div className="hud-panel player-name-panel w-full">
                         <div className="font-creepster text-2xl tracking-wider drop-shadow-[0_0_6px_#6e0000] text-red-500/90 player-name-glow">
                             {state.playerName || 'HUNTER'}
                         </div>
@@ -41,7 +41,7 @@ const Hud: React.FC = () => {
                     </div>
 
                     {/* Stats Block */}
-                    <div className="hud-panel flex flex-col items-end gap-4 min-w-[260px]">
+                    <div className="hud-panel flex flex-col items-end gap-4 w-full min-w-[240px] sm:min-w-[260px]">
                         {/* HP */}
                         <div className="w-full" aria-label="Health" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={hpPercentage}>
                             <div className="flex items-center justify-between mb-1">
