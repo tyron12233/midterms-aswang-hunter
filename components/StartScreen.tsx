@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useLockScroll } from '../hooks/useLockScroll.ts';
 import { useGame } from '../hooks/useGame';
 import { useAudio } from '../context/AudioContext';
 
@@ -8,13 +9,9 @@ import bgMusic from '../assets/sfx/bg-music.mp3';
 const StartScreen: React.FC = () => {
   const [name, setName] = useState('');
   const { dispatch } = useGame();
-  const { playBackground, isBackgroundPlaying, preload, hasUserInteracted } = useAudio();
+  const { playBackground, isBackgroundPlaying, hasUserInteracted } = useAudio();
 
-  // Autoplay policies require a user gesture before audio can play. We attempt when component mounts
-  // and again if the user types/clicks (handled in onChange and onSubmit implicitly by Web Audio resume())
-  // Preload background music immediately (arrayBuffer + decode) so first play is instant after interaction
-  useEffect(() => { preload(bgMusic); }, [preload]);
-
+  // Start background music when component mounts (assets are already preloaded)
   useEffect(() => {
     if (!isBackgroundPlaying) {
       playBackground(bgMusic, {
@@ -32,8 +29,10 @@ const StartScreen: React.FC = () => {
     }
   };
 
+  useLockScroll();
+
   return (
-    <div className="relative min-h-screen text-white bg-black overflow-hidden">
+    <div className="fixed inset-0 text-white bg-black overflow-hidden animate-startscreen-enter">
       {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center animate-pulse-slow"
@@ -118,6 +117,13 @@ const StartScreen: React.FC = () => {
       )}
 
       <style>{`
+          @keyframes startscreen-enter {
+            0% { opacity:0; transform: scale(1.04) translateY(18px); filter: blur(4px) brightness(1.4); }
+            35% { opacity:1; }
+            60% { filter: blur(0px) brightness(1.05); }
+            100% { opacity:1; transform: scale(1) translateY(0); filter: blur(0) brightness(1); }
+          }
+          .animate-startscreen-enter { animation: startscreen-enter 1.2s cubic-bezier(.55,.08,.25,1) both; }
           @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }

@@ -3,9 +3,11 @@ import { useGame } from '../hooks/useGame';
 import Hud from './Hud';
 import SceneDisplay from './SceneDisplay';
 import Jumpscare from './Jumpscare';
+import { useLockScroll } from '../hooks/useLockScroll.ts';
 
 const GameScreen: React.FC = () => {
     const { state, dispatch } = useGame();
+    useLockScroll();
 
     return (
         <div className="relative min-h-screen bg-black text-white flex flex-col items-center justify-center overflow-hidden">
